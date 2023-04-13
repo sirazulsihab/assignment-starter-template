@@ -11,7 +11,7 @@ class App extends Component {
   }
 
   getCities() {
-    fetch('/cities')
+    fetch('http://localhost:6000/cities')
       .then(res => res.json())
       .then(cities => this.setState({ cities }));
 }

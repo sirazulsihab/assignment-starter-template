@@ -23,8 +23,23 @@ app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
-app.get('/cities', (req, res) => {
-  return res.json(cities)
+app.get('/cities', async (req, res) => {
+
+  try {
+    const result = await fetch('https://services.arcgis.com/neT9SoYxizqTHZPH/arcgis/rest/services/STAR_Scores/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=json')
+    res.status(200).json({
+      status: 'success',
+      result:result
+    })
+  } catch (error) {
+    res.status(400).json({
+      status: 'fail',
+      message: error.message
+    })
+  }
+
+  res.send('data success')
+  // return res.json(cities)
 })
 
 app.get('/populations', (req, res) => {
@@ -34,7 +49,7 @@ app.get('/populations', (req, res) => {
 // The "catchall" handler: for any request that doesn't
 // match one above, send back React's index.html file.
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname+'/client/build/index.html'));
+  res.sendFile(path.join(__dirname + '/client/build/index.html'));
 });
 
 module.exports = app;
